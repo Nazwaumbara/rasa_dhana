@@ -113,12 +113,12 @@ router.post("/forgot-password", async (req, res) => {
             from: process.env.EMAIL,
             to: email,
             subject: "Reset Password",
-            text: `Your verification token: ${token}`,
+            text: `Verifikasi token: ${token}`,
         };
 
         transporter.sendMail(mailOptions, function (error, info) {
             if (error) {
-                return res.json({ message: "error sending email" });
+                return res.json({ message: "error mengirim email" });
             } else {
                 return res.json({ status: true, message: "email sent", token: token });
             }
@@ -135,7 +135,7 @@ router.post("/reset-password", async (req, res) => {
         const user = await User.findOne({ resetToken: token });
         
         if (!user) {
-            return res.status(400).json({ error: "Invalid or expired reset token" });
+            return res.status(400).json({ error: "invalid reset token" });
         }
 
         const encryptedPassword = await bcryt.hash(newPassword, 10);
